@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-;(function($, window, document, undefined) {
+(function($, window, document, undefined) {
 
   'use strict'; // jshint ;_;
 
@@ -330,6 +330,9 @@
         case 'dropdown':
           template = '<div class="bootstrap-timepicker-widget dropdown-menu">'+ templateContent +'</div>';
         break;
+        case 'dropup':
+          template = '<div class="dropup"><div class="bootstrap-timepicker-widget dropdown-menu">'+ templateContent +'</div></div>';
+        break;
       }
 
       return template;
@@ -591,8 +594,14 @@
 
       if (this.showMeridian) {
         arr = time.split(' ');
-        timeArray = arr[0].split(':');
-        this.meridian = arr[1];
+        // Because Rails will return a date with time, we need to just look for time
+        if(arr[0].indexOf(':') != -1){
+          timeArray = arr[0].split(':');
+          this.meridian = arr[1];          
+        } else {
+          timeArray = arr[1].split(':');
+          this.meridian = arr[2];
+        }
       } else {
         timeArray = time.split(':');
       }
@@ -874,7 +883,7 @@
     showSeconds: false,
     showInputs: true,
     showMeridian: true,
-    template: 'dropdown',
+    template: 'dropup',
     appendWidgetTo: '.bootstrap-timepicker'
   };
 
